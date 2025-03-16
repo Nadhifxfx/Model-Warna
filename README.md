@@ -1,7 +1,5 @@
 # Model-Warna
 
-# Deteksi Bola
-
 **Soal :**
 buatlah progam untuk mengubah gambar asli dengan 6 metode dibawah.
 
