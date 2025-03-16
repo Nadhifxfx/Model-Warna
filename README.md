@@ -99,3 +99,12 @@ show_results(image)
 **Output :** <br>
 ![download](https://github.com/user-attachments/assets/7e97126d-86fe-4037-a2c1-ac98ffeb778b)
 
+**Penjelasan :** <br>
+- Citra negatif membalik warna dan intensitas gambar, membuat area terang menjadi gelap dan sebaliknya. 
+- Transformasi log meningkatkan detail di area gelap dengan memperluas rentang intensitas. 
+- Transformasi power law (gamma correction) menyesuaikan pencahayaan gambar; gamma > 1 membuat gambar lebih gelap, sedangkan gamma < 1 membuatnya lebih terang.
+- Histogram equalization dan histogram normalization meningkatkan kontras dengan mendistribusikan intensitas lebih merata, membuat detail lebih terlihat.
+- Konversi RGB ke HSI mengubah format warna agar lebih sesuai untuk analisis berbasis warna.
+  
+Untuk thresholding, gambar dikonversi ke grayscale, lalu ditentukan nilai ambang (misalnya 128). Piksel di atas threshold menjadi putih, sementara yang di bawahnya menjadi hitam, menghasilkan gambar biner yang berguna dalam segmentasi dan deteksi objek.
+
