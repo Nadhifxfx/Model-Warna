@@ -1,4 +1,4 @@
-# Model-Warna
+# Model Warna pada Citra
 
 **Soal :**
 buatlah progam untuk mengubah gambar asli dengan 6 metode dibawah.
