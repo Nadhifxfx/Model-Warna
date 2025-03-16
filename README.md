@@ -74,28 +74,28 @@ show_grid_images(
 
 **Penjelasan :** <br>
 **1. Citra Negatif<br>**
-- Input: Gambar grayscale dengan rentang intensitas 0-255.<br>
-- Output: Inversi nilai intensitas, sehingga bagian terang menjadi gelap dan sebaliknya. Cocok untuk analisis kontras tinggi, seperti mendeteksi tepi objek.
+**- Input:** Gambar grayscale dengan rentang intensitas 0-255.<br>
+**- Output:** Inversi nilai intensitas, sehingga bagian terang menjadi gelap dan sebaliknya. Cocok untuk analisis kontras tinggi, seperti mendeteksi tepi objek.
 
 **2. Transformasi Log<br>**
-- Input: Gambar grayscale dengan variasi intensitas yang tinggi.<br>
-- Output: Peningkatan detail pada area yang lebih gelap, berguna untuk menyoroti bagian yang sebelumnya tidak terlihat jelas.
+**- Input:** Gambar grayscale dengan variasi intensitas yang tinggi.<br>
+**- Output:** Peningkatan detail pada area yang lebih gelap, berguna untuk menyoroti bagian yang sebelumnya tidak terlihat jelas.
 
 **3. Transformasi Power Law (Gamma Correction)<br>**
-- Input: Gambar grayscale yang terlalu terang atau terlalu gelap.<br>
-- Output: Penyesuaian kontras dengan faktor gamma, di mana nilai gamma <1 mencerahkan dan >1 menggelapkan gambar.
+**- Input:** Gambar grayscale yang terlalu terang atau terlalu gelap.<br>
+**- Output:** Penyesuaian kontras dengan faktor gamma, di mana nilai gamma <1 mencerahkan dan >1 menggelapkan gambar.
 
 **4. Histogram Equalization<br>**
-- Input: Gambar dengan distribusi intensitas yang kurang merata.<br>
-- Output: Distribusi intensitas yang lebih seragam, meningkatkan detail di area terang dan gelap secara otomatis.
+**- Input:** Gambar dengan distribusi intensitas yang kurang merata.<br>
+**- Output:** Distribusi intensitas yang lebih seragam, meningkatkan detail di area terang dan gelap secara otomatis.
 
 **5. Histogram Normalization<br>**
-- Input: Gambar dengan rentang intensitas yang terbatas.<br>
-- Output: Skala intensitas dinormalisasi dalam rentang 0-255 untuk meningkatkan keterbacaan visual.
+- **Input:** Gambar dengan rentang intensitas yang terbatas.<br>
+- **Output:** Skala intensitas dinormalisasi dalam rentang 0-255 untuk meningkatkan keterbacaan visual.
 
 **6. Konversi RGB ke HSI (Hue Component)<br>**
-- Input: Gambar RGB.<br>
-- Output: Komponen Hue dari warna, yang berguna untuk analisis berbasis warna tanpa dipengaruhi intensitas cahaya.
+**- Input:** Gambar RGB.<br>
+**- Output:** Komponen Hue dari warna, yang berguna untuk analisis berbasis warna tanpa dipengaruhi intensitas cahaya.
 
 **Thresholding** memisahkan gambar menjadi area terang dan gelap berdasarkan nilai ambang. Pada kode ini saya menggunakan Otsu’s Thresholding, yang secara otomatis menentukan threshold optimal berdasarkan distribusi intensitas gambar:
 
