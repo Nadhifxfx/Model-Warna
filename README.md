@@ -1,5 +1,3 @@
-![download (1)](https://github.com/user-attachments/assets/b3497a3a-41b4-4e6b-8afd-688678c1226b)# Model Warna pada Citra
-
 **Soal :**<br>
 - buatlah progam untuk mengubah gambar asli dengan 6 metode dibawah.
 - jelaskan kondisi input dan output gambar ketika menggunakan metode.
@@ -72,26 +70,35 @@ show_grid_images(
 ![download (1)](https://github.com/user-attachments/assets/b0ee4866-511e-4602-b8d4-041046e07d10)
 
 **Penjelasan :** <br>
-1. Citra Negatif
+1. Citra Negatif<br>
 Input: Gambar grayscale dengan rentang intensitas 0-255.
 Output: Inversi nilai intensitas, sehingga bagian terang menjadi gelap dan sebaliknya. Cocok untuk analisis kontras tinggi, seperti mendeteksi tepi objek.
 
-2. Transformasi Log
+2. Transformasi Log<br>
 Input: Gambar grayscale dengan variasi intensitas yang tinggi.
 Output: Peningkatan detail pada area yang lebih gelap, berguna untuk menyoroti bagian yang sebelumnya tidak terlihat jelas.
 
-3. Transformasi Power Law (Gamma Correction)
+3. Transformasi Power Law (Gamma Correction)<br>
 Input: Gambar grayscale yang terlalu terang atau terlalu gelap.
 Output: Penyesuaian kontras dengan faktor gamma, di mana nilai gamma <1 mencerahkan dan >1 menggelapkan gambar.
 
-4. Histogram Equalization
+4. Histogram Equalization<br>
 Input: Gambar dengan distribusi intensitas yang kurang merata.
 Output: Distribusi intensitas yang lebih seragam, meningkatkan detail di area terang dan gelap secara otomatis.
 
-5. Histogram Normalization
+5. Histogram Normalization<br>
 Input: Gambar dengan rentang intensitas yang terbatas.
 Output: Skala intensitas dinormalisasi dalam rentang 0-255 untuk meningkatkan keterbacaan visual.
 
-6. Konversi RGB ke HSI (Hue Component)
+6. Konversi RGB ke HSI (Hue Component)<br>
 Input: Gambar RGB.
 Output: Komponen Hue dari warna, yang berguna untuk analisis berbasis warna tanpa dipengaruhi intensitas cahaya.
+
+Thresholding memisahkan gambar menjadi area terang dan gelap berdasarkan nilai ambang. Pada kode ini saya menggunakan Otsu’s Thresholding, yang secara otomatis menentukan threshold optimal berdasarkan distribusi intensitas gambar:
+```
+python
+Salin
+Edit
+_, threshold_image = cv2.threshold(image_hsi[:,:,2], 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+```
+Metode ini memastikan pemisahan area terang dan gelap yang lebih akurat tanpa perlu menentukan threshold secara manual.
