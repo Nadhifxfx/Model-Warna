@@ -1,10 +1,10 @@
 # Model Warna pada Citra
 
-**Soal :**
-buatlah progam untuk mengubah gambar asli dengan 6 metode dibawah.
+**Soal :**<br>
+- buatlah progam untuk mengubah gambar asli dengan 6 metode dibawah.
+- jelaskan kondisi input dan output gambar ketika menggunakan metode.
+- kerjakan di google collab/editor lain. dan upload pada github.  
 
-jelaskan kondisi input dan output gambar ketika menggunakan metode.
-kerjakan di google collab/editor lain. dan upload pada github.  
 1. citra negative
 2. ctransformasi log
 3. transformasi power law
