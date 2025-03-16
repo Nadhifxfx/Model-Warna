@@ -1,4 +1,4 @@
-# Model Warna pada Citra
+![download (1)](https://github.com/user-attachments/assets/b3497a3a-41b4-4e6b-8afd-688678c1226b)# Model Warna pada Citra
 
 **Soal :**<br>
 - buatlah progam untuk mengubah gambar asli dengan 6 metode dibawah.
@@ -15,94 +15,83 @@
  # Jawaban
 
 ```python
+from google.colab import files
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-import io
-import base64
-from google.colab import files
-from skimage import exposure, color
 
-# Upload file
-def upload_file():
-    uploaded = files.upload()
-    for filename in uploaded.keys():
-        return filename
+# Upload image file
+uploaded = files.upload()
 
-# Load image
-def load_image(filename):
-    image = cv2.imread(filename)
-    return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+# Membaca gambar yang diunggah
+image_path = list(uploaded.keys())[0]
+image = cv2.imread(image_path)
 
-# Citra negatif
-def negative_image(image):
-    return 255 - image
+# Cek apakah gambar berwarna atau grayscale
+if len(image.shape) == 3:
+    image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+else:
+    image_gray = image
 
-# Transformasi log
-def log_transform(image):
-    c = 255 / np.log(1 + np.max(image))
-    return np.array(c * np.log(1 + image), dtype=np.uint8)
-
-# Transformasi power law (gamma correction)
-def power_law_transform(image, gamma=1.2):
-    c = 255 / (np.max(image) ** gamma)
-    return np.array(c * (image ** gamma), dtype=np.uint8)
-
-# Histogram equalization
-def histogram_equalization(image):
-    if len(image.shape) == 3:
-        image_yuv = cv2.cvtColor(image, cv2.COLOR_RGB2YUV)
-        image_yuv[:, :, 0] = cv2.equalizeHist(image_yuv[:, :, 0])
-        return cv2.cvtColor(image_yuv, cv2.COLOR_YUV2RGB)
-    else:
-        return cv2.equalizeHist(image)
-
-# Histogram normalization
-def histogram_normalization(image):
-    return exposure.rescale_intensity(image, in_range='image', out_range=(0, 255)).astype(np.uint8)
-
-# Konversi RGB ke HSI
-def rgb_to_hsi(image):
-    return color.rgb2hsv(image)
-
-# Menampilkan hasil
-def show_results(image):
-    transformations = {
-        'Original': image,
-        'Negative': negative_image(image),
-        'Log Transform': log_transform(image),
-        'Power Law Transform': power_law_transform(image),
-        'Histogram Equalization': histogram_equalization(image),
-        'Histogram Normalization': histogram_normalization(image),
-        'RGB to HSI': rgb_to_hsi(image)
-    }
+# Fungsi untuk menampilkan beberapa gambar dalam grid 2x4
+def show_grid_images(images, titles, cmap_options):
+    plt.figure(figsize=(12, 8))  # Atur ukuran lebih besar agar lebih rapi
     
-    plt.figure(figsize=(10, 10))
-    for i, (title, img) in enumerate(transformations.items()):
-        plt.subplot(3, 3, i+1)
-        if title == 'RGB to HSI':
-            plt.imshow(img)
-        else:
-            plt.imshow(img, cmap='gray' if len(img.shape) == 2 else None)
-        plt.title(title)
+    for i in range(len(images)):
+        plt.subplot(2, 4, i + 1)  # 2 baris, 4 kolom
+        plt.imshow(images[i], cmap=cmap_options[i])
+        plt.title(titles[i], fontsize=10)
         plt.axis('off')
+
+    plt.tight_layout()  # Atur agar gambar tidak saling tumpang tindih
     plt.show()
 
-# Main program
-filename = upload_file()
-image = load_image(filename)
-show_results(image)
+# Transformasi Citra
+negative_image = 255 - image_gray
+log_image = np.uint8(255 / np.log(1 + np.max(image_gray)) * np.log(1 + image_gray.astype(np.float32)))
+power_law_image = np.array(255 * (image_gray / 255) ** 0.5, dtype='uint8')
+equalized_image = cv2.equalizeHist(image_gray)
+normalized_image = cv2.normalize(image_gray, None, 0, 255, cv2.NORM_MINMAX)
+image_hsi = cv2.cvtColor(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), cv2.COLOR_RGB2HSV)
+
+# Thresholding (Otsu)
+_, threshold_image = cv2.threshold(image_hsi[:, :, 2], 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+# Menampilkan dalam grid 2x4
+show_grid_images(
+    [cv2.cvtColor(image, cv2.COLOR_BGR2RGB), image_gray, negative_image, log_image, 
+     power_law_image, equalized_image, normalized_image, threshold_image], 
+    ['Gambar Asli (RGB)', 'Gambar Asli (Grayscale)', 'Citra Negative', 'Transformasi Log', 
+     'Transformasi Power Law', 'Histogram Equalization', 'Histogram Normalization', 'Thresholding Otsu'],
+    [None, 'gray', 'gray', 'gray', 'gray', 'gray', 'gray', 'gray']
+)
 
 ```
 **Output :** <br>
-![download](https://github.com/user-attachments/assets/7e97126d-86fe-4037-a2c1-ac98ffeb778b)
+
+![download (1)](https://github.com/user-attachments/assets/b0ee4866-511e-4602-b8d4-041046e07d10)
 
 **Penjelasan :** <br>
-- Citra negatif membalik warna dan intensitas gambar, membuat area terang menjadi gelap dan sebaliknya. 
-- Transformasi log meningkatkan detail di area gelap dengan memperluas rentang intensitas. 
-- Transformasi power law (gamma correction) menyesuaikan pencahayaan gambar; gamma > 1 membuat gambar lebih gelap, sedangkan gamma < 1 membuatnya lebih terang.
-- Histogram equalization dan histogram normalization meningkatkan kontras dengan mendistribusikan intensitas lebih merata, membuat detail lebih terlihat.
-- Konversi RGB ke HSI mengubah format warna agar lebih sesuai untuk analisis berbasis warna.
-  
-Untuk thresholding, gambar dikonversi ke grayscale, lalu ditentukan nilai ambang (misalnya 128). Piksel di atas threshold menjadi putih, sementara yang di bawahnya menjadi hitam, menghasilkan gambar biner yang berguna dalam segmentasi dan deteksi objek.
+1. Citra Negatif
+Input: Gambar grayscale dengan rentang intensitas 0-255.
+Output: Inversi nilai intensitas, sehingga bagian terang menjadi gelap dan sebaliknya. Cocok untuk analisis kontras tinggi, seperti mendeteksi tepi objek.
 
+2. Transformasi Log
+Input: Gambar grayscale dengan variasi intensitas yang tinggi.
+Output: Peningkatan detail pada area yang lebih gelap, berguna untuk menyoroti bagian yang sebelumnya tidak terlihat jelas.
+
+3. Transformasi Power Law (Gamma Correction)
+Input: Gambar grayscale yang terlalu terang atau terlalu gelap.
+Output: Penyesuaian kontras dengan faktor gamma, di mana nilai gamma <1 mencerahkan dan >1 menggelapkan gambar.
+
+4. Histogram Equalization
+Input: Gambar dengan distribusi intensitas yang kurang merata.
+Output: Distribusi intensitas yang lebih seragam, meningkatkan detail di area terang dan gelap secara otomatis.
+
+5. Histogram Normalization
+Input: Gambar dengan rentang intensitas yang terbatas.
+Output: Skala intensitas dinormalisasi dalam rentang 0-255 untuk meningkatkan keterbacaan visual.
+
+6. Konversi RGB ke HSI (Hue Component)
+Input: Gambar RGB.
+Output: Komponen Hue dari warna, yang berguna untuk analisis berbasis warna tanpa dipengaruhi intensitas cahaya.
