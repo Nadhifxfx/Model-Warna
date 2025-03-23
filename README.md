@@ -100,8 +100,6 @@ show_grid_images(
 **Thresholding** memisahkan gambar menjadi area terang dan gelap berdasarkan nilai ambang. Pada kode ini saya menggunakan Otsu’s Thresholding, yang secara otomatis menentukan threshold optimal berdasarkan distribusi intensitas gambar:
 
 ```python
-Salin
-Edit
 _, threshold_image = cv2.threshold(image_hsi[:,:,2], 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 ```
 Metode ini memastikan pemisahan area terang dan gelap yang lebih akurat tanpa perlu menentukan threshold secara manual.
